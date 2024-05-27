@@ -39,7 +39,7 @@ model = dict(
     bbox_head=dict(num_classes=num_classes))
 
 train_dataloader = dict(
-    batch_size=2,
+    batch_size=1,
     num_workers=4,
     dataset=dict(
         data_root=data_root,
