@@ -33,12 +33,18 @@ class BaseDetDataset(BaseDataset):
                  backend_args: dict = None,
                  return_classes: bool = False,
                  caption_prompt: Optional[dict] = None,
+                 split_names: List = [],
+                 ann_name: str = '',
+                 ann_cls: str = '',
                  **kwargs) -> None:
         self.seg_map_suffix = seg_map_suffix
         self.proposal_file = proposal_file
         self.backend_args = backend_args
         self.return_classes = return_classes
         self.caption_prompt = caption_prompt
+        self.split_names = split_names
+        self.ann_name = ann_name
+        self.ann_cls = ann_cls
         if self.caption_prompt is not None:
             assert self.return_classes, \
                 'return_classes must be True when using caption_prompt'

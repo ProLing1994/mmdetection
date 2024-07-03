@@ -1,4 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import cv2
 import copy
 import os
 import os.path as osp
@@ -277,15 +278,21 @@ class DetInferencerXML(BaseInferencer):
             try:
                 chunk_data = []
                 for _ in range(chunk_size):
-                    inputs_ = next(inputs_iter)
-                    if isinstance(inputs_, dict):
-                        if 'img' in inputs_:
-                            ori_inputs_ = inputs_['img']
-                        else:
-                            ori_inputs_ = inputs_['img_path']
-                        chunk_data.append(
-                            (ori_inputs_,
-                             self.pipeline(copy.deepcopy(inputs_))))
+                    while 1: 
+                        inputs_ = next(inputs_iter)
+                        if isinstance(inputs_, dict):
+                            if 'img' in inputs_:
+                                ori_inputs_ = inputs_['img']
+                            else:
+                                ori_inputs_ = inputs_['img_path']
+                            try:
+                                chunk_data.append(
+                                    (ori_inputs_,
+                                    self.pipeline(copy.deepcopy(inputs_))))
+                                break
+                            except:
+                                print("[ERROR]: {}".format(inputs_['img_path']))
+                                continue
                     else:
                         chunk_data.append((inputs_, self.pipeline(inputs_)))
                 yield chunk_data
@@ -413,10 +420,12 @@ class DetInferencerXML(BaseInferencer):
                         bboxes = pred.pred_instances.bboxes
                         scores = pred.pred_instances.scores
                         label_names = pred.pred_instances.label_names 
-                        img_path = pred.img_path.split("/")[-1][:-4]
+                        img_name = pred.img_path.split("/")[-1][:-4]
+                        img = cv2.imread(pred.img_path)
+                        img_shape = img.shape
                         save_path = osp.join(out_dir,
-                                    img_path + '.xml') if out_dir != '' else None
-                        write_xml(save_path, img_path, bboxes, scores, label_names)
+                                    img_name + '.xml') if out_dir != '' else None
+                        write_xml(save_path, img_name, img_shape, bboxes, scores, label_names)
             except:
                 continue
         return results_dict

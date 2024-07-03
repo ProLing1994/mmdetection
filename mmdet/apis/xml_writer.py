@@ -1,3 +1,4 @@
+import cv2
 import os
 from xml.dom.minidom import Document
 import json
@@ -94,10 +95,8 @@ class XmlWriter(object):
             f.write(self.doc.toprettyxml(indent='    ', encoding='utf-8'))
 
 
-def write_xml(output_xml_path, image_path, bboxes, scores, labels, image_shape=None):
-    if "/" in image_path:
-        image_path = os.path.split(image_path)[-1]
-    xml_writer = XmlWriter(image_path, image_shape)
+def write_xml(output_xml_path, img_name, img_shape, bboxes, scores, labels):
+    xml_writer = XmlWriter(img_name, img_shape)
     logits_filt = scores.cpu().clone()
     boxes_filt = bboxes.cpu().clone()
     labels_filt = np.array(labels)
