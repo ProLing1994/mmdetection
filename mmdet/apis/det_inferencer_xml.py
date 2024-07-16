@@ -421,8 +421,8 @@ class DetInferencerXML(BaseInferencer):
                         scores = pred.pred_instances.scores
                         label_names = pred.pred_instances.label_names 
                         img_name = pred.img_path.split("/")[-1][:-4]
-                        img = cv2.imread(pred.img_path)
-                        img_shape = img.shape
+                        img_shape = [0, 0, 3]
+                        img_shape[:2] = pred.ori_shape
                         save_path = osp.join(out_dir,
                                     img_name + '.xml') if out_dir != '' else None
                         write_xml(save_path, img_name, img_shape, bboxes, scores, label_names)

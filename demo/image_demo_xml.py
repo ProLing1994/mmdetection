@@ -44,6 +44,17 @@ from mmdet.apis import DetInferencerXML
 
 def parse_args():
     parser = ArgumentParser()
+
+    # parser.add_argument('--inputs', type=str, default="/yuanhuan/data/image/RM_SchBus_Police_Capture_Raw_Video/POLICE_CN_ZG_HCZP/400w_240702_侧向镜头_人车漏检/face/jpg/0000000000000000-240702-093711-093715-000003346260/", help='Input image file or folder path.')
+    # parser.add_argument('--model', type=str, default="/yuanhuan/model/image/mm_grounding_dino/zbw/mm_grounding_dino_l_capture_faceocclusion/grounding_dino_swin-l_finetune_8xb4_20e_capture_faceocclusion.py", help='Config or checkpoint .pth file or the model name '
+    #     'and alias defined in metafile. The model configuration '
+    #     'file will try to read from .pth if the parameter is '
+    #     'a .pth weights file.')
+    # parser.add_argument('--weights', default="/yuanhuan/model/image/mm_grounding_dino/zbw/mm_grounding_dino_l_capture_faceocclusion/epoch_20.pth", help='Checkpoint file')
+    # parser.add_argument('--out-dir', type=str, default='outputs', help='Output directory of images or prediction results.')
+    # parser.add_argument('--save-xml', action='store_true', help='Do not save detection xml results')
+    # parser.add_argument('--texts', default='front_face . side_face . face_occlusion . person . bicyclist . motorcyclist .', help='text prompt')
+    
     parser.add_argument(
         'inputs', type=str, help='Input image file or folder path.')
     parser.add_argument(
@@ -64,6 +75,7 @@ def parse_args():
         action='store_true',
         help='Do not save detection xml results')
     parser.add_argument('--texts', help='text prompt')
+
     parser.add_argument(
         '--device', default='cuda:0', help='Device used for inference')
     parser.add_argument(
