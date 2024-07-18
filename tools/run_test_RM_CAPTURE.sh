@@ -9,9 +9,7 @@ model_root=/yuanhuan/model/image/mm_grounding_dino/mm_grounding_dino_l_2w_captur
 config=$model_root/grounding_dino_swin-l_finetune_capture_rm.py
 checkpoint=$model_root/$epoch.pth
 # file_path=/yuanhuan/data/image/RM_Capture/analysis/dataset_list_total.txt
-# file_path=/yuanhuan/data/image/RM_Capture/analysis/dataset_list_add_202407.txt
-# file_path=/yuanhuan/data/image/RM_Capture/analysis/dataset_list_add_202407_1.txt
-file_path=/yuanhuan/data/image/RM_Capture/analysis/dataset_list_add_202407_2.txt
+file_path=/yuanhuan/data/image/RM_Capture/analysis/dataset_list_add_202407.txt
 for line in $(cat ${file_path})
 do
     echo "$line"
@@ -55,7 +53,7 @@ do
     fi
 
     # 运行 Python 脚本并记录日志
-    python /yuanhuan/code/demo/Image/Basic/script/xml/xml_nms.py \
+    python /yuanhuan/code/demo/Image/Basic/script/xml/xml_nms_dupes.py \
         --jpg_dir "$image" \
         --xml_dir "$xml" \
         --out_xml_dir "$xml_nms"

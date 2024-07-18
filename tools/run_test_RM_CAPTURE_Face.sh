@@ -60,7 +60,7 @@ do
     fi
 
     # 运行 Python 脚本并记录日志
-    python /yuanhuan/code/demo/Image/Basic/script/xml/xml_nms.py \
+    python /yuanhuan/code/demo/Image/Basic/script/xml/xml_nms_dupes.py \
         --jpg_dir "$image" \
         --xml_dir "$xml" \
         --out_xml_dir "$xml_nms"
