@@ -2,8 +2,8 @@ _base_ = '../coco/grounding_dino_swin-t_finetune_16xb4_1x_coco_rm.py'
 
 load_from = "/yuanhuan/model/image/mm_grounding_dino/grounding_dino_swin-l_pretrain_all-56d69e78.pth"
 # load_from = "/yuanhuan/model/image/mm_grounding_dino/grounding_dino_swin-l_pretrain_obj365_goldg-34dcdc53.pth"
-data_root = '/yuanhuan/data/image/RM_Capture/training/'
-class_name = ('car', 'bus', 'truck', 'motorcyclist', 'license',)
+data_root = '/yuanhuan/data/image/RM_HUANWEI/original/Argentina/Argentina/'
+class_name = ('garbage', 'license',)
 num_classes = len(class_name)
 metainfo = dict(classes=class_name, palette=[(106, 0, 228), (119, 11, 32), (165, 42, 42), (0, 0, 192), (197, 226, 255), (0, 60, 100)])
 
@@ -39,15 +39,14 @@ model = dict(
     bbox_head=dict(num_classes=num_classes))
 
 train_dataloader = dict(
-    batch_size=2,
-    num_workers=8,
+    batch_size=1,
+    num_workers=4,
     dataset=dict(
         type='RMCocoDataset',
         data_root=data_root,
         metainfo=metainfo,
         split_names=[
-                  'Capture_Plate_1w_dupes_0_1',
-                  'Capture_Plate_Balanced_selection_c27/1w',
+                  'Argentina_20240913',
                   ],
         ann_name='train.json',
         ann_cls="",
@@ -59,7 +58,7 @@ val_dataloader = dict(
         metainfo=metainfo,
         data_root=data_root,
         split_names=[
-                  'Capture_Plate_1w_dupes_0_1',
+                  'Argentina_20240913',
                   ],
         ann_name='test.json',
         ann_cls="",
@@ -67,7 +66,7 @@ val_dataloader = dict(
 
 test_dataloader = val_dataloader
 
-val_evaluator = dict(ann_file='/yuanhuan/data/image/RM_Capture/original_dupes_0_1_1w/test.json')
+val_evaluator = dict(ann_file='/yuanhuan/data/image/RM_HUANWEI/original/Argentina/Argentina/Argentina_20240913/test.json')
 test_evaluator = val_evaluator
 
 max_epoch = 20
