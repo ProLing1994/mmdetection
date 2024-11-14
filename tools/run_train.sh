@@ -12,4 +12,5 @@ cd /yuanhuan/code/demo/Image/detection2d/ori_mmdetection/mmdetection/
 # ./tools/dist_train.sh configs/mm_grounding_dino/rm/grounding_dino_swin-l_finetune_capture_rm.py 2 --work-dir /yuanhuan/model/image/mm_grounding_dino/mm_grounding_dino_l_2w_capture
 # ./tools/dist_train.sh configs/mm_grounding_dino/rm/grounding_dino_swin-l_finetune_capture_face.py 2 --work-dir /yuanhuan/model/image/mm_grounding_dino/mm_grounding_dino_l_1w_3k_capture_face_occlusion
 # ./tools/dist_train.sh configs/mm_grounding_dino/rm/grounding_dino_swin-l_finetune_huanwei_rm.py 2 --work-dir /yuanhuan/model/image/mm_grounding_dino/mm_grounding_dino_l_balanced_3k_huanwei
-./tools/dist_train.sh configs/mm_grounding_dino/rm/grounding_dino_swin-l_finetune_character_rm.py 2 --work-dir /yuanhuan/model/image/mm_grounding_dino/mm_grounding_dino_l_character_add_huanwei
+# ./tools/dist_train.sh configs/mm_grounding_dino/rm/grounding_dino_swin-l_finetune_character_rm.py 2 --work-dir /yuanhuan/model/image/mm_grounding_dino/mm_grounding_dino_l_character_add_huanwei
+./tools/dist_train.sh configs/mm_grounding_dino/rm/grounding_dino_swin-l_finetune_mosica_face_rm.py 2 --work-dir /data_test/models/mm_grounding_dino/mm_grounding_dino_l_mosica_face_2024_11
