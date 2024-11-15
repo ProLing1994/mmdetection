@@ -2,7 +2,7 @@ _base_ = '../coco/grounding_dino_swin-t_finetune_16xb4_1x_coco_rm.py'
 
 load_from = "/data_test/models/mm_grounding_dino/grounding_dino_swin-l_pretrain_all-56d69e78.pth"
 # load_from = "/yuanhuan/model/image/mm_grounding_dino/grounding_dino_swin-l_pretrain_obj365_goldg-34dcdc53.pth"
-data_root = '/data_test/images/RM_Face_Mosaic/training/balanced_2w_20241104'
+data_root = '/data_test/images/RM_Face_Mosaic/training/balanced_2w_20241104/'
 class_name = ('head',)
 num_classes = len(class_name)
 metainfo = dict(classes=class_name, palette=[(106, 0, 228), (119, 11, 32), (165, 42, 42), (0, 0, 192), (197, 226, 255), (0, 60, 100)])
@@ -39,7 +39,7 @@ model = dict(
     bbox_head=dict(num_classes=num_classes))
 
 train_dataloader = dict(
-    batch_size=2,
+    batch_size=1,
     num_workers=8,
     dataset=dict(
         type='RMCocoDataset',
