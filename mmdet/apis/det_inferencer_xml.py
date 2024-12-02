@@ -413,21 +413,21 @@ class DetInferencerXML(BaseInferencer):
             os.makedirs(out_dir, exist_ok=True)
         for ori_imgs, data in (track(inputs, description='Inference', total=len(ori_inputs)/batch_size)
                                if self.show_progress else inputs):
-            try:
-                preds = self.forward(data, **forward_kwargs)
-                if save_xml:
-                    for pred in preds:
-                        bboxes = pred.pred_instances.bboxes
-                        scores = pred.pred_instances.scores
-                        label_names = pred.pred_instances.label_names 
-                        img_name = pred.img_path.split("/")[-1][:-4]
-                        img_shape = [0, 0, 3]
-                        img_shape[:2] = pred.ori_shape
-                        save_path = osp.join(out_dir,
-                                    img_name + '.xml') if out_dir != '' else None
-                        write_xml(save_path, img_name, img_shape, bboxes, scores, label_names)
-            except:
-                continue
+            # try:
+            preds = self.forward(data, **forward_kwargs)
+            if save_xml:
+                for pred in preds:
+                    bboxes = pred.pred_instances.bboxes
+                    scores = pred.pred_instances.scores
+                    label_names = pred.pred_instances.label_names 
+                    img_name = pred.img_path.split("/")[-1][:-4]
+                    img_shape = [0, 0, 3]
+                    img_shape[:2] = pred.ori_shape
+                    save_path = osp.join(out_dir,
+                                img_name + '.xml') if out_dir != '' else None
+                    write_xml(save_path, img_name, img_shape, bboxes, scores, label_names)
+            # except:
+            #     continue
         return results_dict
 
     def visualize(self,
