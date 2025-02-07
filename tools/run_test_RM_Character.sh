@@ -17,7 +17,8 @@ checkpoint=$model_root/$epoch.pth
 image_paths=(
     # "/yuanhuan/data/image/RM_ANPR/original/RM_Character/"
     # "/yuanhuan/data/image/RM_HUANWEI/original/Argentina/DIFFSTE/original_test_scale_padding/"
-    "/yuanhuan/data/image/RM_HUANWEI/original/Argentina/DIFFSTE/original_220240923_scale_padding/"
+    # "/yuanhuan/data/image/RM_HUANWEI/original/Argentina/DIFFSTE/original_220240923_scale_padding/"
+    "/yuanhuan/data/image/RM_ANPR/original/zd/UAE/UAE_crop_scale_padding/test/"
 )
 for line in "${image_paths[@]}"
 do
