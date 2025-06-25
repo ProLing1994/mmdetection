@@ -48,13 +48,14 @@ def parse_args():
     # parser.add_argument(
     #     "--inputs",
     #     type=str,
-    #     default="/data_test/images/RM_Face_Mosaic/testing/test_data_size_up_708_480_20240918/balanced_merge/mosica_face_DMS/JPEGImages_test/",
+    #     default="/yuanhuan/data/image/RM_C28_detection/original/america/JPEGImages_dupes_0_95/",
     #     help="Input image file or folder path.",
     # )
     # parser.add_argument(
     #     "--model",
     #     type=str,
-    #     default="/data_test/models/mm_grounding_dino/mm_grounding_dino_l_mosica_face_2024_11/grounding_dino_swin-l_finetune_mosica_face_rm.py",
+    #     default="/yuanhuan/model/image/mm_grounding_dino/avm/configs/grounding_dino/grounding_dino_swin-t_finetune_16xb2_1x_avm.py",
+    #     # default="/yuanhuan/model/image/mm_grounding_dino/mm_grounding_dino_l_2w_capture/grounding_dino_swin-l_finetune_capture_rm.py",
     #     help="Config or checkpoint .pth file or the model name "
     #     "and alias defined in metafile. The model configuration "
     #     "file will try to read from .pth if the parameter is "
@@ -62,19 +63,21 @@ def parse_args():
     # )
     # parser.add_argument(
     #     "--weights",
-    #     default="/data_test/models/mm_grounding_dino/mm_grounding_dino_l_mosica_face_2024_11/epoch_20.pth",
+    #     default="/yuanhuan/model/image/mm_grounding_dino/avm/gdino_tiny_avm_gj_ep3.pth",
+    #     # default="/yuanhuan/model/image/mm_grounding_dino/mm_grounding_dino_l_2w_capture/epoch_20.pth",
     #     help="Checkpoint file",
     # )
     # parser.add_argument(
     #     "--out-dir",
     #     type=str,
-    #     default="/data_test/images/RM_Face_Mosaic/testing/test_data_size_up_708_480_20240918/balanced_merge/mosica_face_DMS/Annotations_test_res/mm_grounding_dino_l_mosica_face_2024_11",
+    #     default="/yuanhuan/data/image/RM_C28_detection/original/america/Annotations_dupes_0_95_AVM_MMGroundingDINO/",
     #     help="Output directory of images or prediction results.",
     # )
     # parser.add_argument(
     #     "--save-xml", default=True, help="Do not save detection xml results"
     # )
-    # parser.add_argument("--texts", default="head .", help="text prompt")
+    # parser.add_argument("--texts", default="person . cyclist . car .", help="text prompt")
+    # # parser.add_argument("--texts", default="car . bus . truck . motorcyclist . license .", help="text prompt")
 
     parser.add_argument("inputs", type=str, help="Input image file or folder path.")
     parser.add_argument(
