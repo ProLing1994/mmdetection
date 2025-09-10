@@ -415,6 +415,24 @@ class DetInferencerXML(BaseInferencer):
                                if self.show_progress else inputs):
             try:
                 preds = self.forward(data, **forward_kwargs)
+                # collect predictions (explicit fields)
+                for pred in preds:
+                    try:
+                        bboxes = pred.pred_instances.bboxes
+                        scores = pred.pred_instances.scores
+                        label_names = pred.pred_instances.label_names
+                        # convert to serializable types where possible
+                        bboxes_out = bboxes.tolist() if hasattr(bboxes, 'tolist') else bboxes
+                        scores_out = scores.tolist() if hasattr(scores, 'tolist') else scores
+                        label_names_out = list(label_names) if not isinstance(label_names, (list, tuple)) else list(label_names)
+                        results_dict['predictions'].append({
+                            'bboxes': bboxes_out,
+                            'scores': scores_out,
+                            'label_names': label_names_out,
+                        })
+                    except Exception:
+                        # fallback: skip malformed sample
+                        continue
                 if save_xml:
                     for pred in preds:
                         bboxes = pred.pred_instances.bboxes

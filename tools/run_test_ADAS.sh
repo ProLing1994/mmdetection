@@ -3,27 +3,24 @@ export HF_ENDPOINT=https://hf-mirror.com
 source /opt/conda/bin/activate base
 conda init bash
 conda activate mmdet
-export PYTHONPATH=/yuanhuan/code/demo/Image/detection2d/ori_mmdetection/mmdetection/:$PYTHONPATH
+export PYTHONPATH=/defaultShare/data_closing/reps/mmdetectionv3.2/:$PYTHONPATH
 
-# epoch=grounding_dino_swin-l_finetune_adas_10_percent_epoch_20_v1.1.2
-# model_root=/yuanhuan/model/image/mm_grounding_dino/ADAS
-# config=$model_root/grounding_dino_swin-l_finetune_adas_10_percent_epoch_20_v1.1.2.py
-# checkpoint=$model_root/$epoch.pth
+MODEL_PATH=/defaultShare/data_closing/models/gdino_rm/v2.0
+CONFIG_PATH_DEFAULT=${MODEL_PATH}/rm_grounding_dino_swin-l_pretrain_all.py
+CONFIG_PATH="${CONFIG_PATH_DEFAULT}"
+WEIGHT_PATH="${MODEL_PATH}/epoch_12.pth"
 
-epoch=gdino_pretrain_1.7w_aebs_zero_shot_59.4
-model_root=/yuanhuan/model/image/mm_grounding_dino/ADAS/v1.1/
-config=$model_root/grounding_dino_swin-l_pretrain_obj365_goldg.py
-checkpoint=$model_root/$epoch.pth
-
-# # file_path=/yuanhuan/data/image/RM_Capture/analysis/dataset_list_BSD_R151.txt
+# file_path=/yuanhuan/data/image/RM_Capture/analysis/dataset_list_BSD_R151.txt
 # file_path=/yuanhuan/data/image/RM_Capture/analysis/dataset_list_C28.txt
-# for line in $(cat ${file_path})
+# file_path=/yuanhuan/data/image/RM_Capture/analysis/dataset_list_ANPR.txt
+file_path=/yuanhuan/data/image/ZG_test/test.txt
+for line in $(cat ${file_path})
 
-image_paths=(
-    "/yuanhuan/data/image/RM_Capture/training/Capture_Plate_Balanced_selection_c27/1w"
-    "/yuanhuan/data/image/RM_Capture/training/Capture_Plate_1w_dupes_0_1"
-)
-for line in "${image_paths[@]}"
+# image_paths=(
+#     "/yuanhuan/data/image/RM_Capture/training/Capture_Plate_Balanced_selection_c27/1w"
+#     "/yuanhuan/data/image/RM_Capture/training/Capture_Plate_1w_dupes_0_1"
+# )
+# for line in "${image_paths[@]}"
 do
     echo "$line"
 
@@ -34,15 +31,32 @@ do
     xml="${line}/Annotations_ADAS_MMGroundingDINO/"
     xml_nms="${line}/Annotations_ADAS_MMGroundingDINO_NMS/"
 
-    # if [[ -d $xml_nms ]]; then
-    #     echo "XML NMS directory is Done: $xml"
-    #     continue  # 跳过这个路径
-    # fi
-    
-    # if [[ ! -d $image ]]; then
-    #     echo "Image directory not found: $image"
-    #     continue  # 跳过这个路径
-    # fi
+    if [[ ! -d $image ]]; then
+        echo "Image directory not found: $image"
+        continue  # 跳过这个路径
+    fi
+
+    # 删除 $image 文件夹中不是 .jpg 的数据
+    # find "$image" -type f ! -name "*.jpg" -delete
+    find "$image" -type f ! -name "*.jpg" -print0 | xargs -0 rm -f
+
+    if [[ -d $xml_nms ]]; then
+
+        # 统计输入文件夹下的文件数量
+        input_file_count=$(find "$image" -type f | wc -l)
+        # 统计输出文件夹下的文件数量
+        output_file_count=$(find "$xml_nms" -type f | wc -l)
+
+        echo "input_file_count: $input_file_count"
+        echo "output_file_count: $output_file_count"
+
+        if [[ $(($input_file_count > $output_file_count ? $input_file_count - $output_file_count : $output_file_count - $input_file_count)) -lt 100 ]]; then
+            echo "XML NMS directory is Done: $xml_nms"
+            continue  # 跳过这个路径
+        else
+            echo "输入和输出文件夹下的文件数量不一致"
+        fi
+    fi
 
     if [[ ! -d $xml ]]; then
         echo "XML output directory not found, creating: $xml"
@@ -50,14 +64,14 @@ do
     fi
 
     # 运行 Python 脚本并记录日志
-    cd /yuanhuan/code/demo/Image/detection2d/ori_mmdetection/mmdetection/
-    python ./demo/image_demo_xml.py \
+    cd /defaultShare/data_closing/reps/mmdetectionv3.2/
+    python ./demo/image_demo_gdino_vpt.py \
         "$image" \
-        "$config" \
-        --weights "$checkpoint" \
+        ${CONFIG_PATH} \
+        --weights ${WEIGHT_PATH} \
         --out-dir "$xml" \
         --save-xml \
-        --batch-size 1 \
+        --batch-size 2 \
         --texts 'car . bus . truck . tricycle . bicycle . motorcycle . car_reg . car_big_reg . car_front . car_big_front . tricycle_reg . person . bicyclist . motorcyclist . tricyclist . license .' 
 
     if [[ ! -d $xml ]]; then

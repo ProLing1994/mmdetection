@@ -3,6 +3,7 @@ export HF_ENDPOINT=https://hf-mirror.com
 source /opt/conda/bin/activate base
 conda init bash
 conda activate mmdet
+export PYTHONPATH=/yuanhuan/code/demo/Image/detection2d/ori_mmdetection/mmdetection/:$PYTHONPATH
 
 epoch=gdino_tiny_avm_gj_ep3
 model_root=/yuanhuan/model/image/mm_grounding_dino/avm

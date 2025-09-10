@@ -1,36 +1,30 @@
 #!/opt/conda/bin bash
+# pytorch-mmdet-mmseg-yuanhuan
 export HF_ENDPOINT=https://hf-mirror.com
 source /opt/conda/bin/activate base
 conda init bash
 conda activate mmdet
+export PYTHONPATH=/yuanhuan/code/demo/Image/detection2d/ori_mmdetection/mmdetection/:$PYTHONPATH
 
 epoch=epoch_20
-model_root=/yuanhuan/model/image/mm_grounding_dino/zbw/mm_grounding_dino_l_capture_faceocclusion
-config=$model_root/grounding_dino_swin-l_finetune_8xb4_20e_capture_faceocclusion.py
+model_root=/yuanhuan/chenxiao/人头标注数据/head
+config=$model_root/grounding_dino_swin-l_finetune_capture_cx_lins.py
 checkpoint=$model_root/$epoch.pth
-# model_root=/yuanhuan/model/image/mm_grounding_dino/zbw/mm_grounding_dino_l_capture_face
-# config=$model_root/grounding_dino_swin-l_finetune_8xb4_20e_capture_face.py
-# checkpoint=$model_root/$epoch.pth
 
-file_path=/yuanhuan/data/image/ZG_test/test.txt
-for line in $(cat ${file_path})
-
-# image_paths=(
-#     "/yuanhuan/data/image/AEB/AEBS_BYD_ACC/AEB_taxt_专题优化/横穿误刹/h264_analyze/h264_data/粤ACA6121_100600009477_30165_20250211151442_2_7988734717932e1cd2a59a01424d23fc"
-# )
-# for line in "${image_paths[@]}"
+image_paths=(
+    #"/yuanhuan/data/image/RM_Capture/training/Capture_C28_bicyclist_motorcyclist/"
+    "/yuanhuan/chenxiao/人头标注数据"
+)
+for line in "${image_paths[@]}"
 do
     echo "$line"
 
-    image="${line}/JPEGImages/"
-    xml="${line}/Annotations_Face_wZhedang_MMGroundingDINO/"
-    xml_nms="${line}/Annotations_Face_wZhedang_MMGroundingDINO_NMS/"
-    # image="${line}/JPEGImages/"
-    # xml="${line}/Annotations_Face_MMGroundingDINO/"
-    # xml_nms="${line}/Annotations_Face_MMGroundingDINO_NMS/"
-    # image="${line}/"
-    # xml="${line}/Annotations_Face_MMGroundingDINO/"
-    # xml_nms="${line}/Annotations_Face_MMGroundingDINO_NMS/"
+    # image="${line}/JPEGImages_test_cyclist/"
+    # xml="${line}/Annotations_test_cyclist_MMGroundingDINO_bicyclist_motorcyclist/"
+    # xml_nms="${line}/Annotations_test_cyclist_MMGroundingDINO_bicyclist_motorcyclist_NMS/"
+    image="${line}/JPEGImages_test/"
+    xml="${line}/Annotations_test_MMGroundingDINO_bicyclist_motorcyclist/"
+    xml_nms="${line}/Annotations_test_MMGroundingDINO_bicyclist_motorcyclist_NMS/"
 
     if [[ ! -d $image ]]; then
         echo "Image directory not found: $image"
@@ -65,20 +59,15 @@ do
     fi
 
     # 运行 Python 脚本并记录日志
-    cd /yuanhuan/code/demo/Image/detection2d/ori_mmdetection/mmdetection/
-    export PYTHONPATH=/yuanhuan/code/demo/Image/detection2d/ori_mmdetection/mmdetection:$PYTHONPATH
+    cd /yuanhuan/code/demo/Image/detection2d/ori_mmdetection/mmdetection
     python ./demo/image_demo_xml.py \
         "$image" \
         "$config" \
         --weights "$checkpoint" \
         --out-dir "$xml" \
         --save-xml \
-        --batch-size 4 \
-        --texts 'front_face . side_face . face_occlusion . person . bicyclist . motorcyclist .' 
-    # --texts 'front_face . side_face . face_occlusion . person . bicyclist . motorcyclist .' 
-    # --texts 'front_face . side_face . person . bicyclist . motorcyclist .' 
-    # --texts 'front_face . side_face . person . bicyclist .' 
-        
+        --batch-size 1 \
+        --texts 'head .' 
 
     if [[ ! -d $xml ]]; then
         echo "xml directory not found: $xml"
@@ -86,7 +75,7 @@ do
     fi
 
     # 运行 Python 脚本并记录日志
-    python /yuanhuan/code/demo/Image/Basic/script/xml/xml_nms_dupes.py \
+    python /yuanhuan/code/demo//Image/Basic/script/xml/xml_nms_dupes.py \
         --jpg_dir "$image" \
         --input_xml_dir "$xml" \
         --output_xml_dir "$xml_nms"
